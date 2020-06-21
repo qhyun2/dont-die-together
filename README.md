@@ -1,13 +1,13 @@
-# rubiks-verse
-A Rubik's cube blind solve training web app made with TypeScript and three.js
+# Don't Die Together
+A multiplayer 3D horror game 
 
-#### Hosted on GitHub pages: https://qhyun2.github.io/rubiks-verse/
+#### Hosted on GitHub pages: https://hyper-n.github.io/dont-die-together/
 
 ## Development Setup
 
 ```
-git clone https://github.com/qhyun2/rubiks-verse.git
-cd rubiks-verse
+git clone https://github.com/Hyper-n/dont-die-together.git
+cd dont-die-together
 npm install
 npm run dev
 ```
