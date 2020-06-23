@@ -20,22 +20,22 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".js"],
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: "./src/index.html",
-      filename: "./index.html",
-    }),
-  ],
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
+  },
+  performance: {
+    hints: false,
   },
   devServer: {
     contentBase: path.join(__dirname, "dist"),
     compress: true,
     port: 3000,
   },
-  performance: {
-    hints: false,
-  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./src/index.html",
+      filename: "./index.html",
+    }),
+  ],
 };
