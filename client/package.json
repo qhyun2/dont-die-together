@@ -3,12 +3,16 @@
   "version": "1.0.0",
   "description": "A Rubik's cube blind solve training web app made with TypeScript and three.js which embraces next generation dynamic channels",
   "dependencies": {
+    "colyseus.js": "^0.13.1",
+    "howler": "^2.2.0",
+    "kontra": "^6.9.1",
     "three": "^0.117.1",
     "ts-loader": "^7.0.5",
     "typescript": "^3.9.5",
     "webpack": "^4.43.0"
   },
   "devDependencies": {
+    "@types/howler": "^2.2.0",
     "@types/three": "^0.103.2",
     "gh-pages": "^3.0.0",
     "html-loader": "^1.1.0",
