@@ -14,6 +14,7 @@
   "devDependencies": {
     "@types/howler": "^2.2.0",
     "@types/three": "^0.103.2",
+    "file-loader": "^6.0.0",
     "gh-pages": "^3.0.0",
     "html-loader": "^1.1.0",
     "html-webpack-plugin": "^4.3.0",
