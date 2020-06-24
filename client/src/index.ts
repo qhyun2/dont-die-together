@@ -25,17 +25,22 @@ camera.position.z = 2;
   controls.enablePan = false;
 
 
-var spotLight = new THREE.SpotLight( 0xffffff );
-spotLight.position.set( 100, 1000, 100 );
+  var spotLight = new THREE.DirectionalLight( 0xffffff );
+  spotLight.position.set( 6, 10, 8 );
+  spotLight.castShadow = true;
 
-spotLight.castShadow = true;
+  const loader = new THREE.CubeTextureLoader();
+      const texture = loader.load([
+        require("../skybox/pos-x.png").default,
+        require("../skybox/neg-x.png").default,
+        require("../skybox/pos-y.png").default,
+        require("../skybox/neg-y.png").default,
+        require("../skybox/pos-z.png").default,
+        require("../skybox/neg-z.png").default
+      ]);
+      texture
+      scene.background = texture;
 
-spotLight.shadow.mapSize.width = 1024;
-spotLight.shadow.mapSize.height = 1024;
-
-spotLight.shadow.camera.near = 500;
-spotLight.shadow.camera.far = 4000;
-spotLight.shadow.camera.fov = 30;
 
 scene.add( spotLight );
 
