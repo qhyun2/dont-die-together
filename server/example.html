@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width" />
+
+    <style>
+      body {
+        font-family: Tahoma, Geneva, sans-serif;
+      }
+    </style>
+
+    <script
+      type="text/javascript"
+      src="https://raw.githack.com/colyseus/colyseus.js/master/dist/colyseus.js"
+    ></script>
+  </head>
+  <body>
+    <p>
+      This example shows how to use custom data structures in your room's state.
+    </p>
+
+    <button onclick="update()">update</button>
+
+    <script>
+      var host = window.document.location.host.replace(/:.*/, "");
+      var client = new Colyseus.Client("ws://localhost:2567");
+      var room;
+
+      client.joinOrCreate("game_room").then((room_instance) => {
+        room = room_instance;
+
+        window.addEventListener("keydown", function (e) {
+          if (e.which === 38) {
+            up();
+          }
+        });
+      });
+      function update() {
+        room.send("type", { y: "gang" });
+      }
+    </script>
+  </body>
+</html>
