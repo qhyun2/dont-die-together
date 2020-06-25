@@ -23,7 +23,7 @@ scene.add(axesHelper);
 
 var geometry = new THREE.SphereBufferGeometry(1, 20, 20);
 var material = new THREE.MeshPhongMaterial({
-  color: 0x013fcc,
+  color: 'purple',
   reflectivity: 1,
   shininess: 140
 });
