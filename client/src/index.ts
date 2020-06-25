@@ -1,9 +1,18 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-// import * as Howler from "howler";
+import {Howl, Howler} from 'howler';
 // import * as Colyseus from "colyseus.js";
 import * as Kontra from "kontra";
 import { MirroredRepeatWrapping } from "three";
+
+
+// Remus Audio Stuff
+let file = new Howl({
+  src: ['http://20423.live.streamtheworld.com/RADIO538.mp3'],
+  html5: true, // A live stream can only be played through HTML5 Audio.
+  format: ['mp3', 'aac'],
+});
+// Remus Audio Stuff
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(
@@ -93,7 +102,16 @@ loop.start();
 
 const direction = new THREE.Vector3();
 
+let firstRun = 1;
+
 function update(dt: number) {
+  // Remus Audio Stuff
+  if (firstRun == 1) {
+    file.play();
+  }
+  firstRun = 0;
+  // Remus Audio Stuff
+  
   const speed = 0.1;
   if (Kontra.keyPressed("a")) {
     cube.position.x -= speed;
