@@ -7,7 +7,17 @@ A multiplayer 3D horror game
 
 ```
 git clone https://github.com/Hyper-n/dont-die-together.git
-cd dont-die-together
+```
+
+```
+cd dont-die-together/server
+```
+or
+```
+cd dont-die-together/client
+```
+
+```
 npm install
 npm run dev
 ```
