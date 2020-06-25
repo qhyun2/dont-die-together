@@ -1,5 +1,5 @@
 import * as THREE from "three";
-// import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 // import * as Howler from "howler";
 // import * as Colyseus from "colyseus.js";
 import * as Kontra from "kontra";
@@ -12,15 +12,23 @@ var camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
-camera.position.y = 10;
+camera.position.z = 10;
 var renderer = new THREE.WebGLRenderer();
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-var geometry = new THREE.BoxGeometry();
-var material = new THREE.MeshPhysicalMaterial({ color: 0x013fcc });
+const axesHelper = new THREE.AxesHelper(5);
+scene.add(axesHelper);
+
+var geometry = new THREE.SphereBufferGeometry(1, 20, 20);
+var material = new THREE.MeshPhongMaterial({
+  color: 0x013fcc,
+  reflectivity: 1,
+  shininess: 140
+});
 var cube = new THREE.Mesh(geometry, material);
+cube.position.set(0, 1.7/2, 0);
 scene.add(cube);
 
 const ground_geo = new THREE.PlaneBufferGeometry(1000, 1000);
@@ -30,19 +38,36 @@ const ground_tex = new THREE.TextureLoader().load(
 ground_tex.repeat.set(1000, 1000);
 ground_tex.wrapS = THREE.RepeatWrapping;
 ground_tex.wrapT = THREE.RepeatWrapping;
-const ground_mat = new THREE.MeshPhysicalMaterial({ map: ground_tex });
+const ground_mat = new THREE.MeshPhongMaterial({
+  map: ground_tex,
+  dithering: true,
+});
 const ground = new THREE.Mesh(ground_geo, ground_mat);
 ground.rotation.x = -Math.PI / 2;
 scene.add(ground);
 
-// const controls = new OrbitControls(camera, renderer.domElement);
-// controls.enableDamping = true;
-// controls.dampingFactor = 0.25;
-// controls.enablePan = false;
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.25;
+controls.enablePan = false;
+controls.enableZoom = false;
 
-var spotLight = new THREE.DirectionalLight(0xffffff);
-spotLight.position.set(6, 10, 8);
+var ambient = new THREE.AmbientLight(0xffffff, 0.3);
+scene.add(ambient);
+
+const spotLight = new THREE.SpotLight(0xffffff, 1);
+spotLight.position.set(2, 10, 2);
+spotLight.angle = Math.PI / 4;
+spotLight.penumbra = 0.2;
+spotLight.decay = 4;
+spotLight.distance = 100;
+
 spotLight.castShadow = true;
+spotLight.shadow.mapSize.width = 1024;
+spotLight.shadow.mapSize.height = 1024;
+spotLight.shadow.camera.near = 10;
+spotLight.shadow.camera.far = 200;
+scene.add(spotLight);
 
 const loader = new THREE.CubeTextureLoader();
 const texture = loader.load([
@@ -56,8 +81,6 @@ const texture = loader.load([
 texture;
 scene.background = texture;
 
-scene.add(spotLight);
-
 Kontra.init(document.createElement("canvas"));
 Kontra.initKeys();
 
@@ -68,10 +91,11 @@ let loop = Kontra.GameLoop({
 
 loop.start();
 
+const direction = new THREE.Vector3();
+
 function update(dt: number) {
   const speed = 0.1;
   if (Kontra.keyPressed("a")) {
-    console.log("gang");
     cube.position.x -= speed;
   } else if (Kontra.keyPressed("d")) {
     cube.position.x += speed;
@@ -80,8 +104,15 @@ function update(dt: number) {
   } else if (Kontra.keyPressed("s")) {
     cube.position.z += speed;
   }
-  camera.position.set(cube.position.x, cube.position.y, cube.position.z);
-  camera.position.add(new THREE.Vector3(0, 2, 4));
+
+  cube.getWorldPosition(controls.target);
+  controls.update();
+
+  // update the transformation of the camera so it has an offset position to the current target
+
+  direction.subVectors(camera.position, controls.target);
+  direction.normalize().multiplyScalar(10);
+  camera.position.copy(direction.add(controls.target));
 }
 
 function render() {
