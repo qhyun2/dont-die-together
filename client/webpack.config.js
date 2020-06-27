@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports = {
   mode: "none",
   entry: "./src/index.ts",
+  devtool: "eval-source-map",
   module: {
     rules: [
       {
@@ -15,6 +16,10 @@ module.exports = {
         test: /\.html$/,
         use: "html-loader",
       },
+      {
+      test: /\.(png|svg|jpg|gif|mp3|webm|wav)$/,
+      use: 'file-loader',
+     },
     ],
   },
   resolve: {
