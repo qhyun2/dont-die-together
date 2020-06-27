@@ -9,7 +9,8 @@ var label = document.getElementById("label")!;
 var start = document.getElementById("start")!;
 
 var sound1 = new Howl({
-  src: [require("../audio/sound1.webm").default, require('../audio/sound1.mp3').default]
+  src: [require("../audio/sound1.webm").default, require('../audio/sound1.mp3').default],
+  volume: 0.1
 });
 
 var sound2 = new Howl({
