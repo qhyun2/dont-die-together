@@ -1,17 +1,178 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import {Howl, Howler} from 'howler';
-// import * as Colyseus from "colyseus.js";
+
+import { Howl, Howler } from "howler";
 import * as Kontra from "kontra";
 import { MirroredRepeatWrapping } from "three";
 
+var label = document.getElementById("label")!;
+var start = document.getElementById("start")!;
+
+var sound1 = new Howl({
+  src: [require("../audio/sound1.webm").default, require('../audio/sound1.mp3').default]
+});
+
+var sound2 = new Howl({
+  src: [require('../audio/sound2.webm').default, require('../audio/sound2.mp3').default],
+  sprite: {
+    one: [0, 450],
+    two: [2000, 250],
+    three: [4000, 350],
+    four: [6000, 380],
+    five: [8000, 340],
+    beat: [10000, 11163]
+  }
+});
+
+sound1.once('load', function() {
+  start.removeAttribute('disabled');
+  start.innerHTML = 'BEGIN SPATIAL TESTS';
+  tests[0](chain(1));
+});
+
+
+// Define the tests to run.
+var id;
+var tests = [
+  function (fn: any) {
+    sound1.once("play", function () {
+      label.innerHTML = "PLAYING";
+      setTimeout(fn, 2000);
+    });
+
+    id = sound1.play();
+  },
+
+  function (fn) {
+    sound1.stereo(-1, id);
+
+    label.innerHTML = "LEFT STEREO";
+    setTimeout(fn, 2000);
+  },
+
+  function (fn) {
+    sound1.stereo(1, id);
+
+    label.innerHTML = "RIGHT STEREO";
+    setTimeout(function () {
+      fn();
+    }, 2000);
+  },
+
+  function (fn) {
+    sound1.pos(-2, 0, -0.5, id);
+
+    label.innerHTML = "LEFT POSITION";
+    setTimeout(fn, 2000);
+  },
+
+  function (fn) {
+    sound1.pos(2, 0, -0.5, id);
+
+    label.innerHTML = "RIGHT POSITION";
+    setTimeout(function () {
+      sound1.stop();
+      fn();
+    }, 2000);
+  },
+
+  function (fn) {
+    sound2.pos(-3, 0, -0.5, sound2.play("one"));
+    sound2.once("end", function () {
+      sound2.pos(0, 3, -0.5, sound2.play("two"));
+      sound2.once("end", function () {
+        sound2.pos(3, 0, -0.5, sound2.play("three"));
+        sound2.once("end", function () {
+          sound2.pos(0, -3, -0.5, sound2.play("four"));
+          sound2.once("end", function () {
+            sound2.stop();
+            fn();
+          });
+        });
+      });
+    });
+
+    label.innerHTML = "3D SURROUND";
+  },
+];
+
+// Create a method that will call the next in the series.
+var chain = function (i) {
+  return function () {
+    if (tests[i]) {
+      tests[i](chain(++i));
+    } else {
+      label.innerHTML = "COMPLETE!";
+      label.style.color = "#74b074";
+    }
+  };
+};
+
+start.addEventListener(
+  "click",
+  function () {
+    tests[0](chain(1));
+    start.style.display = "none";
+  },
+  false
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Remus Audio Stuff
-let file = new Howl({
-  src: ['http://20423.live.streamtheworld.com/RADIO538.mp3'],
-  html5: true, // A live stream can only be played through HTML5 Audio.
-  format: ['mp3', 'aac'],
-});
+// @ts-ignore
+// let sound = new Howl({
+//   src: ['http://20423.live.streamtheworld.com/RADIO538.mp3'],
+//   html5: true, // A live stream can only be played through HTML5 Audio.
+//   format: ['mp3', 'aac'],
+//   volume: 0.05
+// });
+
+// console.log(sound)
+
+// const soundId = sound.play()
+// sound.stereo(-1, soundId);
+
 // Remus Audio Stuff
 
 var scene = new THREE.Scene();
@@ -106,12 +267,13 @@ let firstRun = 1;
 
 function update(dt: number) {
   // Remus Audio Stuff
-  if (firstRun == 1) {
-    file.play();
-  }
-  firstRun = 0;
+  // if (firstRun == 1) {
+  //   let id = file.play();
+  //   file.stereo(-1, id);
+  // }
+  // firstRun = 0;
   // Remus Audio Stuff
-  
+
   const speed = 0.1;
   if (Kontra.keyPressed("a")) {
     cube.position.x -= speed;
