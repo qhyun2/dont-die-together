@@ -1,9 +1,9 @@
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls";
+
 // import * as Howler from "howler";
 import * as Colyseus from "colyseus.js";
 import * as Kontra from "kontra";
-import { MirroredRepeatWrapping } from "three";
 
 Kontra.init(document.createElement("canvas"));
 Kontra.initKeys();
@@ -13,7 +13,7 @@ let loop = Kontra.GameLoop({
   render: render,
 });
 
-var client = new Colyseus.Client("ws://localhost:2567");
+var client = new Colyseus.Client("ws://99.251.116.242:2567");
 var room: Colyseus.Room;
 
 var players: { [sessionId: string]: THREE.Mesh } = {};
@@ -42,6 +42,7 @@ client.joinOrCreate("game_room").then((init_room) => {
     console.log("Joined", player, sessionId);
     players[sessionId] = newCube();
     scene.add(players[sessionId]);
+    room.send("move", { y: 0.1 });
   };
 
   room.state.players.onRemove = (player: any, sessionId: string) => {
@@ -53,6 +54,9 @@ client.joinOrCreate("game_room").then((init_room) => {
   room.state.players.onChange = (player: any, sessionId: string) => {
     console.log(player);
     players[sessionId].position.set(player.x, player.y, player.z);
+    if (room.sessionId === sessionId) {
+    controls.getObject().position.set(player.x, player.y, player.z)
+    }
   };
 
   loop.start();
@@ -96,11 +100,23 @@ const ground = new THREE.Mesh(ground_geo, ground_mat);
 ground.rotation.x = -Math.PI / 2;
 scene.add(ground);
 
-const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true;
-controls.dampingFactor = 0.25;
-controls.enablePan = false;
-controls.enableZoom = false;
+const blocker = document.getElementById("blocker")!;
+
+const controls = new PointerLockControls(camera, document.body);
+blocker.addEventListener(
+  "click",
+  () => {
+    controls.lock();
+  },
+  false
+);
+controls.addEventListener("lock", () => {
+  blocker.style.display = "none";
+});
+controls.addEventListener("unlock", () => {
+  blocker.style.display = "block";
+});
+scene.add(controls.getObject());
 
 var ambient = new THREE.AmbientLight(0xffffff, 0.3);
 scene.add(ambient);
@@ -136,6 +152,8 @@ scene.background = texture;
 const direction = new THREE.Vector3();
 
 function update(dt: number) {
+  if (!controls.isLocked) return;
+
   if (Kontra.keyPressed("a")) {
     room.send("move", { x: -0.1 });
   }
@@ -148,15 +166,9 @@ function update(dt: number) {
   if (Kontra.keyPressed("s")) {
     room.send("move", { z: 0.1 });
   }
-
-  cube.getWorldPosition(controls.target);
-  controls.update();
-  // update the transformation of the camera so it has an offset position to the current target
-  direction.subVectors(camera.position, controls.target);
-  direction.normalize().multiplyScalar(10);
-  camera.position.copy(direction.add(controls.target));
 }
 
 function render() {
+  camera.position.y = 1;
   renderer.render(scene, camera);
 }
