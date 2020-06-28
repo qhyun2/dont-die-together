@@ -1,17 +1,17 @@
 {
-  "name": "rubiks-verse",
+  "name": "dont-die-together",
   "version": "1.0.0",
-  "description": "A Rubik's cube blind solve training web app made with TypeScript and three.js which embraces next generation dynamic channels",
+  "description": "",
   "dependencies": {
     "colyseus.js": "^0.13.1",
     "howler": "^2.2.0",
     "kontra": "^6.9.1",
-    "three": "^0.117.1",
-    "ts-loader": "^7.0.5",
-    "typescript": "^3.9.5",
-    "webpack": "^4.43.0"
+    "three": "^0.117.1"
   },
   "devDependencies": {
+    "typescript": "^3.9.5",
+    "webpack": "^4.43.0",
+    "ts-loader": "^7.0.5",
     "@types/howler": "^2.2.0",
     "@types/three": "^0.103.2",
     "file-loader": "^6.0.0",
@@ -26,14 +26,6 @@
     "deploy": "webpack -p && gh-pages -d dist",
     "clean": "rm -r dist && mkdir dist"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/qhyun2/rubiks-verse.git"
-  },
   "author": "qhyun2",
-  "license": "GNU General Public License v3.0",
-  "bugs": {
-    "url": "https://github.com/qhyun2/rubiks-verse/issues"
-  },
-  "homepage": "https://github.com/qhyun2/rubiks-verse#readme"
+  "license": "GNU General Public License v3.0"
 }
