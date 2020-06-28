@@ -14,8 +14,8 @@ let loop = Kontra.GameLoop({
 
 var client = new Colyseus.Client("ws://99.251.116.242:2567");
 var room: Colyseus.Room;
-
 var players: { [sessionId: string]: THREE.Mesh } = {};
+
 
 function newCube() {
   var geometry = new THREE.SphereBufferGeometry(1, 20, 20);
@@ -72,12 +72,12 @@ var label = document.getElementById("label")!;
 var start = document.getElementById("start")!;
 
 var sound1 = new Howl({
-  src: [require("../audio/sound1.webm").default, require('../audio/sound1.mp3').default],
+  src: [require("../res/audio/sound1.webm").default, require('../res/audio/sound1.mp3').default],
   volume: 0.1
 });
 
 var sound2 = new Howl({
-  src: [require('../audio/sound2.webm').default, require('../audio/sound2.mp3').default],
+  src: [require('../res/audio/sound2.webm').default, require('../res/audio/sound2.mp3').default],
   sprite: {
     one: [0, 450],
     two: [2000, 250],
@@ -181,64 +181,6 @@ start.addEventListener(
   false
 );
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Remus Audio Stuff
-// @ts-ignore
-// let sound = new Howl({
-//   src: ['http://20423.live.streamtheworld.com/RADIO538.mp3'],
-//   html5: true, // A live stream can only be played through HTML5 Audio.
-//   format: ['mp3', 'aac'],
-//   volume: 0.05
-// });
-
-// console.log(sound)
-
-// const soundId = sound.play()
-// sound.stereo(-1, soundId);
-
-// Remus Audio Stuff
-
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(
   75,
@@ -257,7 +199,7 @@ scene.add(axesHelper);
 
 const ground_geo = new THREE.PlaneBufferGeometry(1000, 1000);
 const ground_tex = new THREE.TextureLoader().load(
-  require("../skybox/dirt.png").default
+  require("../res/dirt.png").default
 );
 ground_tex.repeat.set(1000, 1000);
 ground_tex.wrapS = THREE.RepeatWrapping;
@@ -305,23 +247,18 @@ spotLight.shadow.camera.near = 10;
 spotLight.shadow.camera.far = 200;
 scene.add(spotLight);
 
-var cube = newCube();
-scene.add(cube);
-
 const loader = new THREE.CubeTextureLoader();
 const texture = loader.load([
-  require("../skybox/pos-x.png").default,
-  require("../skybox/neg-x.png").default,
-  require("../skybox/pos-y.png").default,
-  require("../skybox/neg-y.png").default,
-  require("../skybox/pos-z.png").default,
-  require("../skybox/neg-z.png").default,
+  require("../res/skybox/pos-x.png").default,
+  require("../res/skybox/neg-x.png").default,
+  require("../res/skybox/pos-y.png").default,
+  require("../res/skybox/neg-y.png").default,
+  require("../res/skybox/pos-z.png").default,
+  require("../res/skybox/neg-z.png").default,
 ]);
 scene.background = texture;
 
 const direction = new THREE.Vector3();
-
-let firstRun = 1;
 
 function update(dt: number) {
   // Remus Audio Stuff
