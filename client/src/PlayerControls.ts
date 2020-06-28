@@ -1,12 +1,13 @@
 import * as THREE from "three";
 import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls";
 import * as Kontra from "kontra";
-import { Network } from "./Network"
-import { World } from "./graphics/World"
+import { Network } from "./Network";
+import { World } from "./graphics/World";
 
 export class PlayerControls {
   world: World;
   network: Network;
+  vec = new THREE.Vector3();
   camera = new THREE.PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,
@@ -18,6 +19,7 @@ export class PlayerControls {
   constructor(world: World, network: Network) {
     this.world = world;
     this.network = network;
+    this.world.scene.add(this.controls.getObject());
 
     const blocker = document.getElementById("blocker")!;
     blocker.addEventListener(
@@ -33,22 +35,17 @@ export class PlayerControls {
     this.controls.addEventListener("unlock", () => {
       blocker.style.display = "block";
     });
-    world.scene.add(this.controls.getObject());
   }
 
   update(): void {
     const speed = 0.1;
-    if (Kontra.keyPressed("a")) {
-      this.network.room.send("move", { x: -0.1 });
-    }
-    if (Kontra.keyPressed("d")) {
-      this.network.room.send("move", { x: 0.1 });
-    }
+    const cam = this.controls.getObject();
     if (Kontra.keyPressed("w")) {
-      this.network.room.send("move", { z: -0.1 });
-    }
-    if (Kontra.keyPressed("s")) {
-      this.network.room.send("move", { z: 0.1 });
+
+      this.vec.setFromMatrixColumn(cam.matrix, 0 );
+      this.vec.crossVectors(cam.up, this.vec);
+      this.vec.multiplyScalar(0.1);
+      this.network.room.send("move", { x: this.vec.x, z: this.vec.z });
     }
 
     const player = this.world.players[this.network.room.sessionId].position;
