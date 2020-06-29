@@ -48,7 +48,7 @@ export class PlayerControls {
       this.network.room.send("move", { x: this.vec.x, z: this.vec.z });
     }
 
-    const player = this.world.players[this.network.room.sessionId].position;
+    const player = this.world.players[this.network.room.sessionId].mesh.position;
     this.camera.position.set(player.x, player.y + 3, player.z);
   }
 }

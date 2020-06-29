@@ -1,7 +1,8 @@
 import * as THREE from "three";
+import { Player } from "./Player"
 
 export class World {
-  players: { [sessionId: string]: THREE.Mesh } = {};
+  players: { [sessionId: string]: Player } = {};
   scene = new THREE.Scene();
   private axesHelper = new THREE.AxesHelper(10);
   private ground_tex = new THREE.TextureLoader().load(

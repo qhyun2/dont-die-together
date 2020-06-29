@@ -1,4 +1,16 @@
-function newCube() {
+import * as THREE from "three"
+
+import { World } from "./World"
+
+export class Player {
+
+  mesh: THREE.Mesh
+  world: World
+
+  constructor(world: World) {
+
+    this.world = world
+
     var geometry = new THREE.SphereBufferGeometry(1, 20, 20);
     var material = new THREE.MeshPhongMaterial({
       color: "purple",
@@ -6,9 +18,11 @@ function newCube() {
       shininess: 140,
     });
 
-    var cube = new THREE.Mesh(geometry, material);
-    cube.position.set(0, 1.7 / 2, 0);
-    return cube;
+    this.mesh = new THREE.Mesh(geometry, material);
+    this.world.scene.add(this.mesh);
   }
 
+  remove() {
+    this.world.scene.remove(this.mesh);
+  }
 }
