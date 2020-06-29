@@ -14,31 +14,30 @@ export class Network {
   constructor(loop: Kontra.GameLoop, world: World) {
     this.world = world;
 
-    this.client
-      .joinOrCreate("game_room")
-      .then((init_room) => {
-        console.log("Connected", this.room);
-        this.room = init_room;
+    // start a websocket connection with server
+    this.client.joinOrCreate("game_room").then((init_room) => {
+      console.log("Connected", this.room);
+      this.room = init_room;
 
-        this.room.state.players.onAdd = (player: any, sessionId: string) => {
-          console.log("Joined", player, sessionId);
-          this.world.players[sessionId] = new Player(world);
-        };
+      this.room.state.players.onAdd = (player: any, sessionId: string) => {
+        console.log("Joined", player, sessionId);
+        this.world.players[sessionId] = new Player(world);
+      };
 
-        this.room.state.players.onRemove = (player: any, sessionId: string) => {
-          console.log("Left", player, sessionId);
-          this.world.players[sessionId].remove();
-          delete this.world.players[sessionId];
-        };
+      this.room.state.players.onRemove = (player: any, sessionId: string) => {
+        console.log("Left", player, sessionId);
+        this.world.players[sessionId].remove();
+        delete this.world.players[sessionId];
+      };
 
-        this.room.state.players.onChange = (player: any, sessionId: string) => {
-          this.world.players[sessionId].mesh.position.set(
-            player.x,
-            player.y,
-            player.z
-          );
-        };
-        loop.start();
-      })
+      this.room.state.players.onChange = (player: any, sessionId: string) => {
+        this.world.players[sessionId].mesh.position.set(
+          player.x,
+          player.y,
+          player.z
+        );
+      };
+      loop.start();
+    });
   }
 }

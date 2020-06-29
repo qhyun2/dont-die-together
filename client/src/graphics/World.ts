@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { Player } from "./Player"
+import { Player } from "./Player";
 
 export class World {
   players: { [sessionId: string]: Player } = {};
@@ -13,8 +13,10 @@ export class World {
   private spotLight = new THREE.SpotLight();
 
   constructor() {
+
     this.scene.add(this.axesHelper);
 
+    // ground
     this.ground_tex.repeat.set(1000, 1000);
     this.ground_tex.wrapS = THREE.RepeatWrapping;
     this.ground_tex.wrapT = THREE.RepeatWrapping;
@@ -26,9 +28,11 @@ export class World {
     this.ground.rotation.x = -Math.PI / 2;
     this.scene.add(this.ground);
 
+    // ambient light
     const ambient = new THREE.AmbientLight(0xffffff, 0.3);
     this.scene.add(ambient);
 
+    // spotlight
     this.spotLight.position.set(2, 10, 2);
     this.spotLight.angle = Math.PI / 4;
     this.spotLight.penumbra = 0.2;
@@ -41,6 +45,7 @@ export class World {
     this.spotLight.shadow.camera.far = 200;
     this.scene.add(this.spotLight);
 
+    // skybox
     const loader = new THREE.CubeTextureLoader();
     const texture = loader.load([
       require("../../res/skybox/pos-x.png").default,

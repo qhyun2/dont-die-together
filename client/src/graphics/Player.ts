@@ -1,15 +1,13 @@
-import * as THREE from "three"
+import * as THREE from "three";
 
-import { World } from "./World"
+import { World } from "./World";
 
 export class Player {
-
-  mesh: THREE.Mesh
-  world: World
+  mesh: THREE.Mesh;
+  world: World;
 
   constructor(world: World) {
-
-    this.world = world
+    this.world = world;
 
     var geometry = new THREE.SphereBufferGeometry(1, 20, 20);
     var material = new THREE.MeshPhongMaterial({
