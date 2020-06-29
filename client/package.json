@@ -23,7 +23,7 @@
   },
   "scripts": {
     "dev": "webpack-dev-server",
-    "deploy": "webpack -p && gh-pages -d dist",
+    "deploy": "webpack -p && echo \"dontdietogether.cf\" > ./dist/CNAME && gh-pages -d dist",
     "clean": "rm -r dist && mkdir dist"
   },
   "author": "qhyun2",
