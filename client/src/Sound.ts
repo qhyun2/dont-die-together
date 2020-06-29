@@ -1,8 +1,5 @@
 import { Howl, Howler } from "howler";
 
-
-var start = document.getElementById("start")!;
-
 var sound1 = new Howl({
     src: [require("../res/audio/sound1.webm").default, require('../res/audio/sound1.mp3').default],
     volume: 0.1
@@ -21,12 +18,10 @@ var sound1 = new Howl({
   });
 
   sound1.once('load', function() {
-    start.removeAttribute('disabled');
-    start.innerHTML = 'BEGIN SPATIAL TESTS';
+    // tests[0](chain(1)); // test audio
   });
 
 
-  // Define the tests to run.
   var id;
   var tests = [
     function (fn: any) {
@@ -80,7 +75,6 @@ var sound1 = new Howl({
     },
   ];
 
-  // Create a method that will call the next in the series.
   var chain = function (i) {
     return function () {
       if (tests[i]) {
@@ -88,12 +82,3 @@ var sound1 = new Howl({
       }
     };
   };
-
-  start.addEventListener(
-    "click",
-    function () {
-      tests[0](chain(1));
-      start.style.display = "none";
-    },
-    false
-  );
