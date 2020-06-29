@@ -8,6 +8,7 @@ export class PlayerControls {
   world: World;
   network: Network;
   vec = new THREE.Vector3();
+  move = new THREE.Vector3();
   camera = new THREE.PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,
@@ -39,13 +40,30 @@ export class PlayerControls {
   }
 
   update(): void {
-    const speed = 0.1;
+
+    //
+    // player movement
+    //
+    const zMove =
+      Number(Kontra.keyPressed("w")) - Number(Kontra.keyPressed("s"));
+    const xMove =
+      Number(Kontra.keyPressed("d")) - Number(Kontra.keyPressed("a"));
+
     const cam = this.controls.getObject();
-    if (Kontra.keyPressed("w")) {
-      this.vec.setFromMatrixColumn(cam.matrix, 0);
-      this.vec.crossVectors(cam.up, this.vec);
-      this.vec.multiplyScalar(0.1);
-      this.network.room.send("move", { x: this.vec.x, z: this.vec.z });
+    this.move.set(0, 0, 0);
+
+    // add x axis movement to total movement
+    this.vec.setFromMatrixColumn(cam.matrix, 0);
+    this.move.addScaledVector(this.vec, xMove);
+
+    // add z axis movement to total movement
+    this.vec.crossVectors(cam.up, this.vec);
+    this.move.addScaledVector(this.vec, zMove);
+
+    if (zMove || xMove) {
+      const speed = 0.1;
+      this.move.multiplyScalar(speed);
+      this.network.room.send("move", { x: this.move.x, z: this.move.z });
     }
 
     const player = this.world.players[this.network.room.sessionId].mesh
