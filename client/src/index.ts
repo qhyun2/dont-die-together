@@ -26,6 +26,7 @@ const networking = new Network(loop, world);
 const playerControls = new PlayerControls(world, networking);
 
 function update() {
+  world.update();
   playerControls.update();
 }
 

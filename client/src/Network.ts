@@ -36,11 +36,11 @@ export class Network {
       };
 
       this.room.state.players.onChange = (player: any, sessionId: string) => {
-        this.world.players[sessionId].mesh.position.set(
-          player.x,
-          player.y,
-          player.z
-        );
+        this.world.players[sessionId].pos.set({
+          x: player.x,
+          y: player.y,
+          z: player.z,
+        });
       };
       loop.start();
     });

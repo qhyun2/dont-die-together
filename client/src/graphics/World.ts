@@ -13,7 +13,6 @@ export class World {
   private spotLight = new THREE.SpotLight();
 
   constructor() {
-
     this.scene.add(this.axesHelper);
 
     // ground
@@ -56,5 +55,12 @@ export class World {
       require("../../res/skybox/neg-z.png").default,
     ]);
     this.scene.background = texture;
+  }
+
+  update() {
+    // update every player
+    for (const [_, value] of Object.entries(this.players)) {
+      value.update();
+    }
   }
 }

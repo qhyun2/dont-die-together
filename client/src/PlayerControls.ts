@@ -40,6 +40,9 @@ export class PlayerControls {
   }
 
   update(): void {
+    const player = this.world.players[this.network.room.sessionId].mesh
+      .position;
+    this.camera.position.set(player.x, player.y + 3, player.z);
 
     //
     // player movement
@@ -65,9 +68,5 @@ export class PlayerControls {
       this.move.multiplyScalar(speed);
       this.network.room.send("move", { x: this.move.x, z: this.move.z });
     }
-
-    const player = this.world.players[this.network.room.sessionId].mesh
-      .position;
-    this.camera.position.set(player.x, player.y + 3, player.z);
   }
 }
