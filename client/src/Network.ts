@@ -5,14 +5,19 @@ import * as THREE from "three";
 import { World } from "./graphics/World";
 import { Player } from "./graphics/Player";
 
+// let typescript know server url populated by webpack
+declare var __SERVER_URL__: string;
+
 export class Network {
   world: World;
   // @ts-ignore
   room: Colyseus.Room;
-  client = new Colyseus.Client("ws://99.251.116.242:2567");
+  client: Colyseus.Client;
 
   constructor(loop: Kontra.GameLoop, world: World) {
     this.world = world;
+
+    this.client = new Colyseus.Client(__SERVER_URL__);
 
     // start a websocket connection with server
     this.client.joinOrCreate("game_room").then((init_room) => {

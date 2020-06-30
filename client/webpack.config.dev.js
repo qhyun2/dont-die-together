@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
@@ -38,6 +39,9 @@ module.exports = {
     port: 3000,
   },
   plugins: [
+    new webpack.DefinePlugin({
+      __SERVER_URL__: JSON.stringify("ws://localhost:2567"),
+    }),
     new HtmlWebpackPlugin({
       template: "./src/index.html",
       filename: "./index.html",

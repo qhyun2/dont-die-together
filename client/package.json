@@ -22,8 +22,8 @@
     "webpack-dev-server": "^3.11.0"
   },
   "scripts": {
-    "dev": "webpack-dev-server",
-    "deploy": "webpack -p && echo \"dontdietogether.cf\" > ./dist/CNAME && gh-pages -d dist",
+    "dev": "webpack-dev-server --config ./webpack.config.dev.js",
+    "deploy": "webpack -p --config ./webpack.config.prod.js && echo \"dontdietogether.cf\" > ./dist/CNAME && gh-pages -d dist",
     "clean": "rm -r dist && mkdir dist"
   },
   "author": "qhyun2",
