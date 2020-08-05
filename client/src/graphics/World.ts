@@ -1,5 +1,7 @@
 import * as THREE from "three";
 import { Player } from "./Player";
+import { createElement } from "./Building";
+import data from './../../res/map.json';
 
 export class World {
   players: { [sessionId: string]: Player } = {};
@@ -15,6 +17,7 @@ export class World {
     this.dirLight = new THREE.DirectionalLight(0xffffff, 1);
     this.dirLight.color.setHSL(0.1, 1, 0.95);
     this.dirLight.position.set(-500, 40, -30);
+    this.dirLight.position.set(-5, 4, -3);
     this.dirLight.castShadow = true;
 
     var d = 250;
@@ -56,6 +59,9 @@ export class World {
       require("../../res/skybox/neg-z.png").default,
     ]);
     this.scene.background = texture;
+
+    // buildings
+    data.features.forEach(element => createElement(element, this.scene))
   }
 
   update() {
