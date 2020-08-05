@@ -1,7 +1,20 @@
 import * as THREE from "three"
 
-var transX = x => (x + 80.488) * 3000
-var transY = y => (y - 43.448) * 3000
+const scale = 50000;
+const transX = x => (x + 80.488) * scale
+const transY = y => (y - 43.448) * scale
+var max = 0
+
+// create an array with repeated values of the difference in building heights
+const buildingDiffs = [...[1, 0.7, 0.6, 0.6], ...(new Array<number>(20).fill(0.5))]
+let buildingHeights: number[] = [0]
+let height = 0
+
+for (const diff of buildingDiffs) {
+  height += diff
+  buildingHeights.push(height * scale / 6000)
+}
+const availableHeights = buildingHeights.length - 1
 
 export function createElement(building, scene) {
 
@@ -19,8 +32,9 @@ export function createElement(building, scene) {
 
   var depth = building.properties['building:levels']
   depth = (depth === undefined) ? 1 : depth;
-  // depth *= 7;
-  depth /= 3;
+  if (depth > availableHeights) depth = availableHeights
+  depth = buildingHeights[depth]
+
 
   var geo = new THREE.ExtrudeBufferGeometry(shape, {depth: depth, bevelEnabled: false})
   var mat = new THREE.MeshLambertMaterial({color: 0x91876b});

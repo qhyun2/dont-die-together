@@ -477,44 +477,6 @@
     {
       "type": "Feature",
       "properties": {
-        "@id": "way/41183916",
-        "building": "bridge",
-        "building:levels": "2",
-        "building:min_level": "1",
-        "layer": "1"
-      },
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              -80.4872595,
-              43.4491115
-            ],
-            [
-              -80.4873762,
-              43.4489657
-            ],
-            [
-              -80.4873454,
-              43.4489527
-            ],
-            [
-              -80.4872287,
-              43.4490985
-            ],
-            [
-              -80.4872595,
-              43.4491115
-            ]
-          ]
-        ]
-      },
-      "id": "way/41183916"
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "@id": "way/43352702",
         "attribution": "Natural Resources Canada",
         "building": "retail",

@@ -14,10 +14,9 @@ export class World {
     this.scene.add(new THREE.AmbientLight(0xffffff, 0.3));
 
     // sun
-    this.dirLight = new THREE.DirectionalLight(0xffffff, 1);
+    this.dirLight = new THREE.DirectionalLight(0xffffff, 0.9);
     this.dirLight.color.setHSL(0.1, 1, 0.95);
-    this.dirLight.position.set(-500, 40, -30);
-    this.dirLight.position.set(-5, 4, -3);
+    this.dirLight.position.set(-550, 50, -30);
     this.dirLight.castShadow = true;
 
     var d = 250;
