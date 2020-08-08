@@ -37,9 +37,9 @@ export class Network {
 
       this.room.state.players.onChange = (player: any, sessionId: string) => {
         this.world.players[sessionId].pos.set({
-          x: player.x,
-          y: player.y,
-          z: player.z,
+          x: player.pos.x,
+          y: player.pos.y,
+          z: player.pos.z,
         });
       };
       loop.start();
