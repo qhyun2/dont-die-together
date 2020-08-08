@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 import { Server } from "colyseus";
 import { monitor } from "@colyseus/monitor";
-import { Game } from "./Game";
+import { Game } from "./src/Game";
 
 const port = Number(process.env.PORT || 2567);
 const app = express()
