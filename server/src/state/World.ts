@@ -14,11 +14,5 @@ export class World extends Schema {
     }
 
     movePlayer (id: string, movement: any) {
-        if (movement.x) {
-            this.players[id].pos.x += movement.x;
-        }
-        if (movement.z) {
-            this.players[id].pos.z += movement.z;
-        }
     }
 }

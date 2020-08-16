@@ -20,13 +20,16 @@ export class Network {
     this.client = new Colyseus.Client(__SERVER_URL__);
 
     // start a websocket connection with server
-    this.client.joinOrCreate("game_room").then((init_room) => {
+    this.client.joinOrCreate("game_room").then((room) => {
+      this.room = room;
       console.log("Connected", this.room);
-      this.room = init_room;
 
       this.room.state.players.onAdd = (player: any, sessionId: string) => {
         console.log("Joined", player, sessionId);
         this.world.players[sessionId] = new Player(world);
+        if (sessionId === room.sessionId) {
+          loop.start();
+        }
       };
 
       this.room.state.players.onRemove = (player: any, sessionId: string) => {
@@ -42,7 +45,6 @@ export class Network {
           z: player.pos.z,
         });
       };
-      loop.start();
     });
   }
 }

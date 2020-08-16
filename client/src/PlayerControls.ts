@@ -40,8 +40,7 @@ export class PlayerControls {
   }
 
   update(): void {
-    const player = this.world.players[this.network.room.sessionId].mesh
-      .position;
+    const player = this.world.players[this.network.room.sessionId].pos;
     this.camera.position.set(player.x, player.y + 3, player.z);
 
     //
@@ -62,6 +61,8 @@ export class PlayerControls {
     // add z axis movement to total movement
     this.vec.crossVectors(cam.up, this.vec);
     this.move.addScaledVector(this.vec, zMove);
+
+    if (Kontra.keyPressed("space")) this.network.room.send("jump")
 
     if (zMove || xMove) {
       const speed = 0.1;

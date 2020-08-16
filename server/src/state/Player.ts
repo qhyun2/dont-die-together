@@ -4,4 +4,7 @@ import { Vector } from "./Vector"
 export class Player extends Schema {
     @type(Vector)
     pos = new Vector();
+
+    @type(Vector)
+    vel = new Vector();
 }
