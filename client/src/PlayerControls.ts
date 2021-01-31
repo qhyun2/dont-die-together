@@ -51,6 +51,10 @@ export class PlayerControls {
       Number(Kontra.keyPressed("w")) - Number(Kontra.keyPressed("s"));
     const xMove =
       Number(Kontra.keyPressed("d")) - Number(Kontra.keyPressed("a"));
+    const yMove =
+      Number(Kontra.keyPressed("space"));
+
+    
 
     const cam = this.controls.getObject();
     this.move.set(0, 0, 0);
@@ -68,5 +72,13 @@ export class PlayerControls {
       this.move.multiplyScalar(speed);
       this.network.room.send("move", { x: this.move.x, z: this.move.z });
     }
+
+    if (yMove && player.y <= 0.5) {
+      this.network.room.send("move", { y: 0.1 });
+    } else if (player.y > 0.5) {
+      this.network.room.send("move", { y: -0.1 });
+    }
+
+
   }
 }

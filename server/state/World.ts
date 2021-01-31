@@ -17,6 +17,9 @@ export class World extends Schema {
         if (movement.x) {
             this.players[id].x += movement.x;
         }
+        if (movement.y) {
+            this.players[id].y += movement.y;
+        }
         if (movement.z) {
             this.players[id].z += movement.z;
         }
