@@ -7,7 +7,7 @@
     "howler": "^2.2.0",
     "kontra": "^6.9.1",
     "ola": "^1.1.1",
-    "three": "^0.117.1"
+    "three": "^0.125.0"
   },
   "devDependencies": {
     "typescript": "^3.9.5",
